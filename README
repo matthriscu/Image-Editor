@@ -1,0 +1,50 @@
+Copyright 2022 Matei Hriscu (311CA) <matei.hriscu@stud.acs.upb.ro>
+
+For all commands, images are stored in the "img" struct which holds all image
+attributes as well as a three dimensional array in which the pixels are stored,
+regardless of the image type. img.matrix[i][j][k] refers to the kth subpixel of
+the pixel on line i, column j. In the case of greyscale images there is only one
+subpixel, while RGB images have 3.
+
+In the main function, entire lines are read from stdin which are then split into
+the command name and parameters. This way, there are never left overs left in
+stdin after an invalid command or a command issued with the wrong number of
+arguments.
+
+LOAD:
+The program will attempt to open the file that is specified as an argument and
+if it is successful it will load the image into memory. If the operation fails
+for any reason, the program will no longer have any image loaded.
+
+SAVE:
+The program will attempt to open the file that is specified as an argument and
+if it is successful it will save the image by rounding all values to the nearest
+integer.
+
+SELECT:
+Updates the image selection if the arguments are valid and retains the old
+selection if they are not.
+
+ROTATE:
+Rotates the image by the provided angle if it is valid. The angle is first
+reduced to the range [0, 360). 90 and 270 degree rotations are performed by
+transposing and inverting the matrix at the same time while 180 degree rotations
+are performed by just flipping the entire selection. 0 degree rotations are
+skipped as they have no effect on the image.
+
+CROP:
+Creates a new image which only contains the current selection, then discards the
+old image.
+
+APPLY:
+Firstly, a kernel matrix is created based on the filter name, then it is applied
+to all pixels (except those near the edge where the aren't enough pixels to
+perform the operation). The result is then clamped to ensure it stays between 0
+and the maximum value of the image.
+
+EXIT:
+Frees all memory and gracefully exits the program.
+
+In some of my header files you will find some pointers written as "foo * bar".
+It was not my intention to write them this way, but writing them as "foo *bar"
+incurs a coding style error.
